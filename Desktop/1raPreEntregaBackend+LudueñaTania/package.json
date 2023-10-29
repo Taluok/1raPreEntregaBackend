@@ -1,0 +1,8 @@
+{
+  "type": "module",
+  "name": "1ra-preentrega-backend",
+  "dependencies": {
+    "express": "^4.18.2",
+    "morgan": "^1.10.0"
+  }
+}
