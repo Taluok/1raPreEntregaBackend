@@ -50,21 +50,27 @@ export class CartManager {
         console.log(error);
     }
   }
-  
+
 //traemos todos los carritos 
-  async saveProductToCart(idCart, idProd){
+  async saveProductToCart(idCart, idProd) {
     const carts = await this.getCarts();
-    const cartExists = await this.getCartById(idCart); //vemos si existe el carrito
-    if(cartExists){
-        const existProdInCart = cartExists.products.find(p => p.id === idProd);
-        if(existProdInCart) existProdInCart.quantity + 1
-        else {
-            const prod = {
+    const cartExists = await this.getCartById(idCart);
+
+    if (cartExists) {
+        const existingProduct = cartExists.products.find((product) => product.product === idProd);
+
+        if (existingProduct) {
+            // Incrementar la cantidad del producto si ya existe
+            existingProduct.quantity += 1;
+        } else {
+            // Agregar el producto como un nuevo elemento en el carrito
+            const newProduct = {
                 product: idProd,
                 quantity: 1
             };
-            cartExists.products.push(prod);
+            cartExists.products.push(newProduct);
         }
+
         await fs.promises.writeFile(this.path, JSON.stringify(carts));
         return cartExists;
     }
